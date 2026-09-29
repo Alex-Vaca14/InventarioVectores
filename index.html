@@ -3,9 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/inventario.png" type="image/png">
+    <script src="./inventario.js"></script>
+    <script src="./producto.js"></script>
     <title>Inventario</title>
 </head>
 <body>
-    <script src="inventario.js"></script>
+    <center>
+        <h1>Inventario</h1>
+
+        <label for="txNom">
+            Nombre:
+        </label>
+        <input type="text" id="txNom" name="txNom">
+
+        <label for="txCode">
+            Código:
+        </label>
+        <input type="text" id="txCode" name="txCode">
+
+        <label for="txCant">
+            Cantidad:
+        </label>
+        <input type="number" id="txCant" name="txCant">
+
+        <label for="txPrec">
+            Precio:
+        </label>
+        <input type="number" id="txPrec" name="txPrec">
+    </center>   
+    <br><br><br>
+    <center>
+        <button type="button" id="btnAgregar">Agregar</button>
+        <button type="button" id="btnBuscar">Buscar</button>
+        <button type="button" id="btnInsertar">Insertar</button>
+        <button type="button" id="btnMostrar">Mostrar</button>
+        <button type="button" id="btnExPrimero">Extraer Primero</button>
+        <button type="button" id="btnAddInicio">Agregar al Inicio</button>
+        <button type="button" id="btnMostrarInverso">Mostrar al revés</button>
+    </center>
+    <br>
+    <button type="button" id="btnEliminar">Eliminar</button>  
+    <div id="listado"></div>
+    <button type="button" id="btnLimpiar">Limpiar</button>
+    <script src="scripts.js"></script>
 </body>
 </html>
