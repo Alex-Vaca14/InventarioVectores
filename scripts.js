@@ -16,10 +16,14 @@ function limpiarCampos(){
 
 const btnAdd=document.getElementById("btnAgregar");
 btnAdd.addEventListener("click", () => {
-    let producto = new Producto(Codigo.value, Nombre.value, Cantidad.value, Costo.value);
-    inventario.agregar(producto);
-    alert("Producto agregado correctamente.");
-    limpiarCampos();
+    if (inventario.buscar(Codigo.value)) {
+        alert("Ese código ya existe.");
+    } else {
+        let producto = new Producto(Codigo.value, Nombre.value, Cantidad.value, Costo.value);
+        inventario.agregar(producto);
+        alert("Producto agregado correctamente.");
+        limpiarCampos();
+    }
 })
 
 const btnSrc=document.getElementById("btnBuscar");

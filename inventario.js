@@ -3,12 +3,27 @@ class Inventario {
         this.productos = [];
     }
     agregar(producto) {
+        let posicion = 0;
+        while (posicion < this.productos.length && Number(this.productos[posicion].codigo) <= Number(producto.codigo)) {
+            posicion++;
+        }
         this.productos.push(producto);
+        for (let i = this.productos.length - 1; i > posicion; i--) {
+            this.productos[i] = this.productos[i - 1];
+        }
+        this.productos[posicion] = producto;
     }
     buscar(codigo) {
-        for (let i = 0; i < this.productos.length; i++) {
-            if (this.productos[i].codigo === codigo) {
-                return this.productos[i];
+        let inicio = 0;
+        let fin = this.productos.length - 1;
+        while (inicio <= fin) {
+            let mitad = Math.floor((inicio + fin) / 2);
+            if (this.productos[mitad].codigo === codigo) {
+                return this.productos[mitad];
+            } else if (codigo < this.productos[mitad].codigo) {
+                fin = mitad - 1;
+            } else {
+                inicio = mitad + 1;
             }
         }
         return null;
