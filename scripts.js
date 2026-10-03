@@ -3,10 +3,9 @@ let Codigo = document.getElementById("txCode");
 let Cantidad = document.getElementById("txCant");
 let Costo = document.getElementById("txPrec");
 let inventario = new Inventario();
-let resultado = document.getElementById("resultado");
 const div = document.getElementById("listado");
 
-function limpiarCampos(){
+function limpiarCampos() {
     document.getElementById("txNom").value = "";
     document.getElementById("txCode").value = "";
     document.getElementById("txCant").value = "";
@@ -14,19 +13,20 @@ function limpiarCampos(){
     document.getElementById("listado").innerHTML = "";
 }
 
-const btnAdd=document.getElementById("btnAgregar");
+const btnAdd = document.getElementById("btnAgregar");
 btnAdd.addEventListener("click", () => {
     if (inventario.buscar(Codigo.value)) {
         alert("Ese código ya existe.");
-    } else {
-        let producto = new Producto(Codigo.value, Nombre.value, Cantidad.value, Costo.value);
-        inventario.agregar(producto);
-        alert("Producto agregado correctamente.");
-        limpiarCampos();
+        return;
     }
-})
 
-const btnSrc=document.getElementById("btnBuscar");
+    let producto = new Producto(Codigo.value, Nombre.value, Cantidad.value, Costo.value);
+    inventario.agregar(producto);
+    alert("Producto agregado correctamente.");
+    limpiarCampos();
+});
+
+const btnSrc = document.getElementById("btnBuscar");
 btnSrc.addEventListener("click", () => {
     let codigo = Codigo.value;
     let producto = inventario.buscar(codigo);
@@ -35,9 +35,9 @@ btnSrc.addEventListener("click", () => {
     } else {
         alert("Producto no encontrado.");
     }
-})
-    
-const btnDlt=document.getElementById("btnEliminar");
+});
+
+const btnDlt = document.getElementById("btnEliminar");
 btnDlt.addEventListener("click", () => {
     let codigo = Codigo.value;
     let eliminado = inventario.eliminar(codigo);
@@ -47,22 +47,23 @@ btnDlt.addEventListener("click", () => {
         alert("Producto no encontrado.");
     }
     limpiarCampos();
-})
+});
 
-const btnInsrt=document.getElementById("btnInsertar");
+const btnInsrt = document.getElementById("btnInsertar");
 btnInsrt.addEventListener("click", () => {
+    let posicion = Number(Codigo.value);
     let producto = new Producto(Codigo.value, Nombre.value, Cantidad.value, Costo.value);
-    let posicion = parseInt(prompt("Ingrese la posición donde desea insertar el producto:"));
-    if (posicion >= 1 && posicion <= inventario.productos.length + 1) {
+
+    if (!Number.isNaN(posicion) && posicion >= 1 && posicion <= inventario.productos.length + 1) {
         inventario.insertar(producto, posicion);
         alert("Producto insertado correctamente.");
     } else {
         alert("Posición inválida.");
     }
     limpiarCampos();
-})
+});
 
-const btnMost=document.getElementById("btnMostrar");
+const btnMost = document.getElementById("btnMostrar");
 btnMost.addEventListener("click", () => {
     let listado = inventario.listar();
     if (listado) {
@@ -70,9 +71,9 @@ btnMost.addEventListener("click", () => {
     } else {
         div.innerHTML = "No hay productos en el inventario.";
     }
-})
+});
 
-const btnExp=document.getElementById("btnExPrimero");
+const btnExp = document.getElementById("btnExPrimero");
 btnExp.addEventListener("click", () => {
     let producto = inventario.extraerPrimero();
     if (producto) {
@@ -80,17 +81,17 @@ btnExp.addEventListener("click", () => {
     } else {
         div.innerHTML = "No hay productos en el inventario.";
     }
-})
+});
 
-const btnAddi=document.getElementById("btnAddInicio");
+const btnAddi = document.getElementById("btnAddInicio");
 btnAddi.addEventListener("click", () => {
     let producto = new Producto(Codigo.value, Nombre.value, Cantidad.value, Costo.value);
     inventario.agregarInicio(producto);
     alert("Producto agregado correctamente.");
     limpiarCampos();
-})
+});
 
-const btnMosti=document.getElementById("btnMostrarInverso");
+const btnMosti = document.getElementById("btnMostrarInverso");
 btnMosti.addEventListener("click", () => {
     let listado = inventario.listaInversa();
     if (listado) {
@@ -98,9 +99,9 @@ btnMosti.addEventListener("click", () => {
     } else {
         div.innerHTML = "No hay productos en el inventario.";
     }
-})
+});
 
-const btnCln=document.getElementById("btnLimpiar");
+const btnCln = document.getElementById("btnLimpiar");
 btnCln.addEventListener("click", () => {
     limpiarCampos();
-})
+});
