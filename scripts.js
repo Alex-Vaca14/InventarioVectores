@@ -16,10 +16,15 @@ function limpiarCampos(){
 
 const btnAdd=document.getElementById("btnAgregar");
 btnAdd.addEventListener("click", () => {
-    let producto = new Producto(Codigo.value, Nombre.value, Cantidad.value, Costo.value);
-    inventario.agregar(producto);
-    alert("Producto agregado correctamente.");
-    limpiarCampos();
+    let codigo = inventario.buscar(Codigo.value);
+    if (codigo) {
+        alert("Ese código ya existe.");
+    } else {
+        let producto = new Producto(Codigo.value, Nombre.value, Cantidad.value, Costo.value);
+        inventario.agregar(producto, Codigo.value);
+        alert("Producto agregado correctamente.");
+        limpiarCampos();
+    }
 })
 
 const btnSrc=document.getElementById("btnBuscar");
@@ -48,9 +53,8 @@ btnDlt.addEventListener("click", () => {
 const btnInsrt=document.getElementById("btnInsertar");
 btnInsrt.addEventListener("click", () => {
     let producto = new Producto(Codigo.value, Nombre.value, Cantidad.value, Costo.value);
-    let posicion = parseInt(prompt("Ingrese la posición donde desea insertar el producto:"));
-    if (posicion >= 1 && posicion <= inventario.productos.length + 1) {
-        inventario.insertar(producto, posicion);
+    if (Codigo.value >= 1 && Codigo.value <= inventario.productos.length + 1) {
+        inventario.insertar(producto, Codigo.value);
         alert("Producto insertado correctamente.");
     } else {
         alert("Posición inválida.");
