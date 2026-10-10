@@ -1,111 +1,152 @@
+class Nodo {
+    constructor(producto) {
+        this.producto = producto;
+        this.siguiente = null;
+    }
+}
+
 class Inventario {
     constructor() {
-        this.productos = [];
+        this.primero = null;
+        this.cantidad = 0;
     }
 
     agregar(producto) {
-        let posicion = this.productos.length;
+        const nuevo = new Nodo(producto);
         const codigoProducto = String(producto.codigo);
 
-        while (posicion > 0 && String(this.productos[posicion - 1].codigo) > codigoProducto) {
-            posicion--;
+        if (this.primero === null ||
+            String(this.primero.producto.codigo) > codigoProducto) {
+            nuevo.siguiente = this.primero;
+            this.primero = nuevo;
+            this.cantidad++;
+            return;
         }
-        this.productos.push(producto);
-        for (let i = this.productos.length - 1; i > posicion; i--) {
-            this.productos[i] = this.productos[i - 1];
+
+        let actual = this.primero;
+
+        while (actual.siguiente !== null &&
+               String(actual.siguiente.producto.codigo) <= codigoProducto) {
+            actual = actual.siguiente;
         }
-        this.productos[posicion] = producto;
+
+        nuevo.siguiente = actual.siguiente;
+        actual.siguiente = nuevo;
+        this.cantidad++;
     }
 
     buscar(codigo) {
-        let inicio = 0;
-        let fin = this.productos.length - 1;
         const codigoBuscado = String(codigo);
+        let actual = this.primero;
 
-        while (inicio <= fin) {
-            let mitad = Math.floor((inicio + fin) / 2);
-            let codigoActual = String(this.productos[mitad].codigo);
+        while (actual !== null) {
+            const codigoActual = String(actual.producto.codigo);
 
             if (codigoActual === codigoBuscado) {
-                return this.productos[mitad];
-            } else if (codigoBuscado < codigoActual) {
-                fin = mitad - 1;
-            } else {
-                inicio = mitad + 1;
+                return actual.producto;
             }
+
+            actual = actual.siguiente;
         }
+
         return null;
     }
 
     eliminar(codigo) {
         const codigoBuscado = String(codigo);
+        let actual = this.primero;
+        let anterior = null;
 
-        for (let i = 0; i < this.productos.length; i++) {
-            if (String(this.productos[i].codigo) === codigoBuscado) {
-                for (let j = i; j < this.productos.length - 1; j++) {
-                    this.productos[j] = this.productos[j + 1];
+        while (actual !== null) {
+            if (String(actual.producto.codigo) === codigoBuscado) {
+                if (anterior === null) {
+                    this.primero = actual.siguiente;
+                } else {
+                    anterior.siguiente = actual.siguiente;
                 }
-                this.productos.pop();
+
+                this.cantidad--;
                 return true;
             }
+
+            anterior = actual;
+            actual = actual.siguiente;
         }
+
         return false;
     }
 
     insertar(producto, posicion) {
         const indice = Number(posicion) - 1;
 
-        if (Number.isNaN(indice) || indice < 0 || indice > this.productos.length) {
+        if (Number.isNaN(indice) || indice < 0 || indice > this.cantidad) {
             return false;
         }
 
-        this.productos.push(null);
+        const nuevo = new Nodo(producto);
 
-        for (let i = this.productos.length - 1; i > indice; i--) {
-            this.productos[i] = this.productos[i - 1];
+        if (indice === 0) {
+            nuevo.siguiente = this.primero;
+            this.primero = nuevo;
+        } else {
+            let actual = this.primero;
+
+            for (let i = 0; i < indice - 1; i++) {
+                actual = actual.siguiente;
+            }
+
+            nuevo.siguiente = actual.siguiente;
+            actual.siguiente = nuevo;
         }
 
-        this.productos[indice] = producto;
+        this.cantidad++;
         return true;
     }
 
     listar() {
         let listado = "";
-        for (let i = 0; i < this.productos.length; i++) {
-            listado += this.productos[i].infohtml() + "\n";
+        let actual = this.primero;
+
+        while (actual !== null) {
+            listado += actual.producto.infohtml() + "\n";
+            actual = actual.siguiente;
         }
+
         return listado;
     }
 
     extraerPrimero() {
-        if (this.productos.length > 0) {
-            let primero = this.productos[0];
-
-            for (let i = 0; i < this.productos.length - 1; i++) {
-                this.productos[i] = this.productos[i + 1];
-            }
-
-            this.productos.pop();
+        if (this.primero !== null) {
+            let primero = this.primero.producto;
+            this.primero = this.primero.siguiente;
+            this.cantidad--;
             return primero;
         }
+
         return null;
     }
 
     agregarInicio(producto) {
-        this.productos.push(producto);
-
-        for (let i = this.productos.length - 1; i > 0; i--) {
-            this.productos[i] = this.productos[i - 1];
-        }
-
-        this.productos[0] = producto;
+        const nuevo = new Nodo(producto);
+        nuevo.siguiente = this.primero;
+        this.primero = nuevo;
+        this.cantidad++;
     }
 
     listaInversa() {
         let listado = "";
-        for (let i = this.productos.length - 1; i >= 0; i--) {
-            listado += this.productos[i].infohtml() + "\n";
+        let actual = this.primero;
+        let productos = [];
+
+        while (actual !== null) {
+            productos.push(actual.producto);
+            actual = actual.siguiente;
         }
+
+        while (productos.length > 0) {
+            listado += productos.pop().infohtml() + "\n";
+        }
+
         return listado;
     }
 }
