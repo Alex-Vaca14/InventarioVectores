@@ -54,7 +54,7 @@ btnInsrt.addEventListener("click", () => {
     let posicion = Number(Codigo.value);
     let producto = new Producto(Codigo.value, Nombre.value, Cantidad.value, Costo.value);
 
-    if (!Number.isNaN(posicion) && posicion >= 1 && posicion <= inventario.productos.length + 1) {
+    if (Number.isInteger(posicion) && posicion >= 1 && posicion <= inventario.cantidad + 1) {
         inventario.insertar(producto, posicion);
         alert("Producto insertado correctamente.");
     } else {
